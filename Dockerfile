@@ -1,17 +1,16 @@
 # Graphite stack
 
-# Build from Ubuntu base
-FROM ubuntu:14.04.2
+# Based on https://github.com/jmreicha/graphite-docker
+FROM ennexa/base
 
 # This suppresses a bunch of annoying warnings from debconf
 ENV DEBIAN_FRONTEND noninteractive
 
 # Install system dependencies
 RUN \
-  apt-get -qq install -y software-properties-common && \
-  add-apt-repository -y ppa:chris-lea/node.js && \
+  wget -qO - https://deb.nodesource.com/setup_0.12 | bash - && \
   apt-get -qq update -y && \
-  apt-get -qq install -y build-essential curl \
+  apt-get -qq install -y build-essential \
     # Graphite dependencies
     python-dev libcairo2-dev libffi-dev python-pip \
     # Supervisor
@@ -19,13 +18,15 @@ RUN \
     # nginx + uWSGI
     nginx uwsgi-plugin-python \
     # StatsD
-    nodejs
+    nodejs && \
+  apt-get -qq clean -y && rm -rf /var/lib/apt/lists/*
+	
 
 # Install StatsD
 RUN \
   mkdir -p /opt && \
   cd /opt && \
-  curl -sLo statsd.tar.gz https://github.com/etsy/statsd/archive/v0.7.2.tar.gz && \
+  wget -qO statsd.tar.gz https://github.com/etsy/statsd/archive/v0.7.2.tar.gz && \
   tar -xzf statsd.tar.gz && \
   mv statsd-0.7.2 statsd
 
@@ -37,20 +38,17 @@ RUN pip install graphite-api[sentry] whisper carbon
 # RUN pip install -y graphite-api[cache]
 
 # Graphite
-COPY carbon.conf /opt/graphite/conf/carbon.conf
-COPY storage-schemas.conf /opt/graphite/conf/storage-schemas.conf
-COPY storage-aggregation.conf /opt/graphite/conf/storage-aggregation.conf
+COPY conf/graphite/carbon.conf conf/graphite/storage-schemas.conf conf/graphite/storage-aggregation.conf /opt/graphite/conf/
 # Supervisord
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # StatsD
-COPY statsd_config.js /etc/statsd/config.js
+COPY conf/statsd/statsd_config.js /etc/statsd/config.js
 # Graphite API
-COPY graphite-api.yaml /etc/graphite-api.yaml
+COPY conf/graphite/graphite-api.yaml /etc/graphite-api.yaml
 # uwsgi
-COPY uwsgi.conf /etc/uwsgi.conf
+COPY conf/uwsgi.conf /etc/uwsgi.conf
 # nginx
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY basic_auth /etc/nginx/basic_auth
+COPY conf/nginx/* /etc/nginx/
 
 # nginx
 EXPOSE 80 \
@@ -66,6 +64,8 @@ EXPOSE 80 \
 8125 \
 # StatsD Admin
 8126
+
+VOLUME ["/etc/nginx", "/etc/statsd", "/opt/graphite/conf"]
 
 # Launch stack
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
