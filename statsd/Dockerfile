@@ -26,7 +26,7 @@ COPY conf/config.js /etc/statsd/config.js
 
 EXPOSE \
   # StatsD UDP
-  8125 \
+  8125/udp \
   # StatsD Admin
   8126
 
