@@ -10,13 +10,8 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN \
   apt-get update -y && \
   apt-get install -y --no-install-recommends \
-    build-essential \
-    # Graphite dependencies
-    python-dev libcairo2-dev libffi-dev python-pip \
-    # Supervisor
-    supervisor \
-    # nginx + uWSGI
-    nginx uwsgi-plugin-python && \
+    g++ python-dev libcairo2-dev libffi-dev python-pip \
+    supervisor && \
   apt-get autoremove -y && apt-get clean -y && \
   rm -rf /var/lib/apt/lists/*
   
@@ -24,7 +19,7 @@ RUN \
   #      apt-get autoremove -y && apt-get clean
 
 # Install Python packages for Graphite
-RUN pip install graphite-api[sentry] whisper carbon
+RUN pip install gunicorn graphite-api[sentry] whisper carbon
 
 # Optional install graphite-api caching
 # http://graphite-api.readthedocs.org/en/latest/installation.html#extra-dependencies
@@ -42,9 +37,9 @@ COPY conf/uwsgi.conf /etc/uwsgi.conf
 COPY conf/nginx/ /etc/nginx/
 
 # nginx
-EXPOSE 80 \
+EXPOSE \
 # graphite-api
-8080 \
+8000 \
 # Carbon line receiver
 2003 \
 # Carbon pickle receiver

@@ -2,7 +2,7 @@ graphite:
     build: graphite
     restart: always
     ports:
-        - "8080:80"
+        - "8000:8000"
         - "2003:2003"
         - "2004:2004"
     volumes:
