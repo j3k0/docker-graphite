@@ -64,7 +64,7 @@ EXPOSE \
 # Carbon cache query
 7002
 
-VOLUME ["/opt/graphite/conf"]
+VOLUME ["/opt/graphite/conf", "/opt/graphite/storage/whisper"]
 
 # Launch stack
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
