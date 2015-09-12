@@ -21,6 +21,6 @@ The image exposes 2 ports
 
 ### Volumes
 
-The image exports 1 volumes
+The image exports 1 volume
 
 - Carbon configuration directory at `/etc/statsd`

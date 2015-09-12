@@ -1,9 +1,9 @@
-# Docker Graphite
+# Graphite / StatsD / Grafana with Docker
 
-This project contains 2 images
+This project contains 2 docker images
 
-- Graphite
-- StatsD
+- [Graphite] (https://github.com/Ennexa/docker-graphite/graphite)
+- [StatsD] (https://github.com/Ennexa/docker-graphite/statsd)
 
 ## Setup
 
