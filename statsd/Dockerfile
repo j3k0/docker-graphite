@@ -1,6 +1,5 @@
 # StatsD
 
-# Based on https://github.com/jmreicha/graphite-docker
 FROM ennexa/base
 
 # This suppresses a bunch of annoying warnings from debconf

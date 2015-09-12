@@ -47,15 +47,11 @@ RUN \
 # RUN pip install -y graphite-api[cache]
 
 # Graphite
-COPY conf/graphite/carbon.conf conf/graphite/storage-schemas.conf conf/graphite/storage-aggregation.conf /opt/graphite/conf/
+COPY conf/graphite/ /opt/graphite/conf/
 # Supervisord
 COPY conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Graphite API
-COPY conf/graphite/graphite-api.yaml /etc/graphite-api.yaml
-# uwsgi
-COPY conf/uwsgi.conf /etc/uwsgi.conf
-# nginx
-COPY conf/nginx/ /etc/nginx/
+COPY conf/graphite-api.yaml /etc/graphite-api.yaml
 
 # nginx
 EXPOSE \
@@ -68,7 +64,7 @@ EXPOSE \
 # Carbon cache query
 7002
 
-VOLUME ["/etc/nginx", "/opt/graphite/conf"]
+VOLUME ["/opt/graphite/conf"]
 
 # Launch stack
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
