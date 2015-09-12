@@ -6,20 +6,41 @@ FROM ennexa/base
 # This suppresses a bunch of annoying warnings from debconf
 ENV DEBIAN_FRONTEND noninteractive
 
-# Install system dependencies
+# Install Dependencies
 RUN \
-  apt-get update -y && \
-  apt-get install -y --no-install-recommends \
-    g++ python-dev libcairo2-dev libffi-dev python-pip \
-    supervisor && \
-  apt-get autoremove -y && apt-get clean -y && \
-  rm -rf /var/lib/apt/lists/*
-  
-  # apt-get remove -y build-essential && \
-  #      apt-get autoremove -y && apt-get clean
+    apt-get update -y && \
+    apt-get install -y --no-install-recommends python-minimal supervisor libffi5 libcairo2 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/
 
 # Install Python packages for Graphite
-RUN pip install gunicorn graphite-api[sentry] whisper carbon
+# Install devel packages only to allow compilation on PIP install
+
+RUN \
+    apt-get update -y && \
+    apt-get install -y --no-install-recommends \
+        g++ \
+        python-dev \
+        libcairo2-dev \
+        libffi-dev \
+        python-pip \
+    && \
+    pip install \
+        gunicorn \
+        graphite-api[sentry] \
+        whisper \
+        carbon \
+    && \
+    apt-get purge --auto-remove -y \
+        g++ \
+        python-dev \
+        python-pip \
+        libcairo2-dev \
+        libffi-dev \
+    && \
+    apt-get autoremove -y --purge && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/
 
 # Optional install graphite-api caching
 # http://graphite-api.readthedocs.org/en/latest/installation.html#extra-dependencies
