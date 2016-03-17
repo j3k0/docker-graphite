@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Install Dependencies
 RUN \
     apt-get update -y && \
-    apt-get install -y --no-install-recommends python-minimal supervisor libffi5 libcairo2 && \
+    apt-get install -y --no-install-recommends python-minimal supervisor libffi6 libcairo2 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/
 
