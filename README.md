@@ -28,7 +28,7 @@ use `http://graphite:8000` as the data source url and select `proxy` as the `acc
 
 ### Using docker-compose
 
-See the `docker-compose.yaml` file for an example configuration for use with `docker-compose``
+See the `docker-compose.yml` file for an example configuration for use with `docker-compose``
 
     sudo pip install -U docker-compose
     git clone https://github.com/ennexa/docker-graphite
