@@ -21,6 +21,7 @@ RUN \
     apt-get install -y --no-install-recommends \
         g++ \
         python-dev \
+        python-six \
         libcairo2-dev \
         libffi-dev \
         python-pip \
