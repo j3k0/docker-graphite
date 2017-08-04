@@ -9,17 +9,17 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN \
   wget -qO - https://deb.nodesource.com/setup_4.x | bash - && \
   apt-get -qq update -y && \
-  apt-get -qq install -y nodejs && \
+  apt-get -qq install -y nodejs unzip && \
   apt-get -qq clean -y && rm -rf /var/lib/apt/lists/*
 
 # Install StatsD
 RUN \
   mkdir -p /opt && \
   cd /opt && \
-  wget -qO statsd.tar.gz https://github.com/etsy/statsd/archive/v0.8.0.tar.gz && \
-  tar -xzf statsd.tar.gz && \
-  mv statsd-0.8.0 statsd && \
-  rm -f statsd.tar.gz
+  wget -qO statsd.zip https://github.com/etsy/statsd/archive/master.zip && \
+  unzip statsd.zip && \
+  mv statsd-master statsd && \
+  rm -f statsd.zip
 
 # StatsD
 COPY conf/config.js /etc/statsd/config.js
