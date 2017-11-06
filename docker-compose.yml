@@ -29,4 +29,4 @@ grafana:
     links:
         - graphite
     environment:
-        - GF_SECURITY_ADMIN_PASSWORD=password
+        - GF_SECURITY_ADMIN_PASSWORD=admin
