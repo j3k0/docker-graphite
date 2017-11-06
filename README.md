@@ -2,8 +2,8 @@
 
 This project contains 2 docker images
 
-- [Graphite] (https://github.com/Ennexa/docker-graphite/graphite)
-- [StatsD] (https://github.com/Ennexa/docker-graphite/statsd)
+- [Graphite] (https://github.com/Ennexa/docker-graphite/tree/master/graphite)
+- [StatsD] (https://github.com/Ennexa/docker-graphite/tree/master/statsd)
 
 ## Setup
 
